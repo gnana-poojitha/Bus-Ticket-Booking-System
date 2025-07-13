@@ -6,6 +6,10 @@ import BusList from './deepcomponents/BusList'
 import BusSeats from './deepcomponents/BusSeats'
 import UserBookings from './deepcomponents/UserBooking'
 import Wrapper from './deepcomponents/Wrapper'
+import { loadStripe } from '@stripe/stripe-js';
+
+const stripePromise = loadStripe(import.meta.env.VITE_STRIPE_PUBLISHABLE_KEY);
+
 
 
 const App = () => {
