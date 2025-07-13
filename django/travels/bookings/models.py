@@ -18,7 +18,9 @@ class Bus(models.Model):
 
 class Seat(models.Model):
     bus=models.ForeignKey('Bus',on_delete=models.CASCADE,related_name='seats')
-    seat_number=models.CharField(max_length=10)
+
+    seat_number = models.CharField(max_length=10, blank=False, null=False)
+
     is_booked=models.BooleanField(default=False)
 
     def __str__(self):
@@ -28,10 +30,17 @@ class Seat(models.Model):
 class Booking(models.Model):
     user = models.ForeignKey(User, on_delete=models.CASCADE)
     bus = models.ForeignKey(Bus, on_delete=models.CASCADE)
-    seat = models.ForeignKey(Seat, on_delete=models.CASCADE)
+    # seat = models.ForeignKey(Seat, on_delete=models.CASCADE)
+    seat = models.OneToOneField(Seat, on_delete=models.CASCADE)
+
     booking_time = models.DateTimeField(auto_now_add=True)
 
     def __str__(self):
         return f"{self.user.username} - {self.bus.bus_name} - {self.bus.start_time} - {self.bus.reach_time} - {self.seat.seat_number}"
     
+    class Meta:
+        unique_together = ('user', 'seat')  # Optional, but adds extra safety
 
+
+class Meta:
+    unique_together = ('bus', 'seat_number')
